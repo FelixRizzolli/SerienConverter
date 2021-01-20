@@ -1,4 +1,18 @@
-# Compiled class file
+#IntelliJ IDEA
+.idea
+
+#Netbeans
+nbproject/private/
+nbbuild/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Compiled & Test
+test/
+out/
+build/
+dist/
 *.class
 
 # Log file
