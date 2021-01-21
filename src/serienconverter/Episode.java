@@ -17,15 +17,13 @@ public class Episode {
     //EpisodeInformations
     private String seriesName;
     private int seasonID;
-    private String seasonName;
     private int episodeID;
     private String episodeName;
     
-    public Episode(String directory, String seriesName, int seasonID, String seasonName) {
+    public Episode(String directory, String seriesName, int seasonID) {
         setDirectory(directory);
         setSeriesName(seriesName);
         setSeasonID(seasonID);
-        setSeasonName(seasonName);
     }
     
     private void setDirectory(String dir){
@@ -36,9 +34,6 @@ public class Episode {
     }
     private void setSeasonID(int seasonID){
         this.seasonID = seasonID;
-    }
-    private void setSeasonName(String seasonName){
-        this.seasonName = seasonName;
     }
     private void setEpisodeID(int episodeID){
         this.episodeID = episodeID;
@@ -55,9 +50,6 @@ public class Episode {
     }
     private int getSeasonID(){
         return this.seasonID;
-    }
-    private String getSeasonName(){
-        return this.seasonName;
     }
     private int getEpisodeID(){
         return this.episodeID;
@@ -76,11 +68,13 @@ public class Episode {
             ));
             setEpisodeName(episode.split(" - ")[1]);
         }
-        else if (mode== Mode.RIZZ_TO_PEER){
+        else if (mode == Mode.RIZZ_TO_PEER){
             setEpisodeID(Integer.parseInt(
                     episode.split(" - ")[0]
-                           .split("[")[1]
+                           .replace("[","X0!0X")
+                           .split("X0!0X")[1]
                            .split("E")[1]
+                           .replace("]", "")
             ));
             setEpisodeName(episode.split(" - ")[1]);
         }
@@ -92,9 +86,9 @@ public class Episode {
             String seasonString = (getSeasonID() < 10) 
                     ? "0" + getSeasonID() 
                     : "" + getSeasonID();
-            String episodeString = (getSeasonID() < 10) 
-                    ? "0" + getSeasonID() 
-                    : "" + getSeasonID();
+            String episodeString = (getEpisodeID() < 10) 
+                    ? "0" + getEpisodeID() 
+                    : "" + getEpisodeID();
             newEpisodeName = (
                 getSeriesName() + 
                 " [S" + seasonString + "E" + episodeString + "] - " + 
@@ -103,15 +97,22 @@ public class Episode {
         }
         else if (mode == Mode.RIZZ_TO_PEER) {
             String seasonString = "" + getSeasonID();
-            String episodeString = (getSeasonID() < 10) 
-                    ? "0" + getSeasonID() 
-                    : "" + getSeasonID();
+            String episodeString = (getEpisodeID() < 10) 
+                    ? "0" + getEpisodeID() 
+                    : "" + getEpisodeID();
             newEpisodeName = (
                 seasonString + "x" + episodeString + " - " +
                 getEpisodeName()
             );
         }
         System.out.println(newEpisodeName);
+        
+        getDirectory().renameTo(
+                new File(
+                    new File(getDirectory().getParent()).getPath() + 
+                    "/" + newEpisodeName
+                )
+        );
         return true;
     }
 }

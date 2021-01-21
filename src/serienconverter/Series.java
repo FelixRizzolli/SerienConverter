@@ -20,10 +20,14 @@ public class Series {
     //SeriesInformations
     private String seriesName;
     
-    public Series(String directory) {
+    public Series(Mode mode, String directory) {
         setDirectory(directory);
-        setSeriesName(getDirectory().getParentFile().getName());
-        scan(Mode.PEER_TO_RIZZ);
+        setSeriesName(getDirectory()
+                .getName()
+                .replace(" (", "X0!0X")
+                .split("X0!0X")[0]
+        );
+        scan(mode);
     }
     
     private void setSeasons(List<Season> seasons){
@@ -56,17 +60,20 @@ public class Series {
             System.out.println(seasonDirectory);
             addSeason(
                 new Season(
-                        mode, 
                         getDirectory().getPath() + "/" + seasonDirectory, 
                         getSeriesName()
                 )
             );
         }
         
-        seasons.forEach(season -> season.scan(mode));
+        seasons.forEach(
+                season -> season.scan(mode)
+        );
     }
     public boolean rename(Mode mode){
-        getSeasons().forEach(season -> season.rename(mode));
+        getSeasons().forEach(
+                season -> season.rename(mode)
+        );
         return true;
     }
 }
